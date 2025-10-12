@@ -1,6 +1,5 @@
 const { Op } = require('sequelize');
 const bcrypt = require('bcryptjs');
-const moment = require('moment');
 
 const { getJWT } = require('../helpers/jwt');
 const User = require('../models/user_app');
@@ -8,7 +7,6 @@ const User = require('../models/user_app');
 const postUser = async (req, res)=>{
     try {
         const { membership_number, full_name, email, dpi, birthdate, password, role_id } = req.body;
-        const formattedBirthdate = moment(birthdate, 'YYYY-MM-DD').toDate();
 
         const userExists = await User.findOne({
             where: {
@@ -23,7 +21,7 @@ const postUser = async (req, res)=>{
             return res.status(400).json({ok: false, msg: 'El correo o el número de colegiado ya se encuentra registrado'});
         }
 
-        const user = new User({ membership_number, full_name, email, dpi, birthdate: formattedBirthdate, password, role_id });
+        const user = new User({ membership_number, full_name, email, dpi, birthdate, password, role_id });
 
         const salt = bcrypt.genSaltSync();
         user.password = bcrypt.hashSync( password, salt );
@@ -45,14 +43,13 @@ const postUser = async (req, res)=>{
 const login = async (req, res)=>{
     try {
         const {membership_number, dpi, birthdate, password} = req.body;
-        const formattedBirthdate = moment(birthdate, 'YYYY-MM-DD').toDate();
         
         const user = await User.findOne({
             where: {
                 [Op.and]:[
                     {membership_number},
                     {dpi},
-                    {birthdate: formattedBirthdate}
+                    {birthdate}
                 ]
             } 
         });

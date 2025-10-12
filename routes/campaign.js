@@ -9,7 +9,7 @@ const router = Router();
 router.post('/', [
     check('title', 'El \'title\' es obligatorio').not().isEmpty(),
     check('description', 'El \'description\' es obligatorio').not().isEmpty(),
-    check('status', 'El \'status\' es obligatorio').not().isEmpty(),
+    check('campaign_state_id', 'El \'campaign_state_id\' es obligatorio').not().isEmpty(),
     check('duration', 'El \'duration\' es obligatorio').not().isEmpty(),
     check('measure_id', 'El \'measure_id\' es obligatorio').not().isEmpty(),
     validarCampos,
@@ -19,7 +19,7 @@ router.post('/', [
 router.put('/:id', [
     check('title', 'El \'title\' es obligatorio').not().isEmpty(),
     check('description', 'El \'description\' es obligatorio').not().isEmpty(),
-    check('status', 'El \'status\' es obligatorio').not().isEmpty(),
+    check('campaign_state_id', 'El \'campaign_state_id\' es obligatorio').not().isEmpty(),
     check('duration', 'El \'duration\' es obligatorio').not().isEmpty(),
     check('measure_id', 'El \'measure_id\' es obligatorio').not().isEmpty(),
     validarCampos,

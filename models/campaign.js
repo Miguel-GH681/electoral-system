@@ -16,8 +16,8 @@ const Campaign = sequelize.define('Campaign', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    status: {
-        type: DataTypes.BOOLEAN,
+    campaign_state_id: {
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     duration: {

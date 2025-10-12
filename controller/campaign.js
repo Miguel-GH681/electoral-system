@@ -6,8 +6,8 @@ const sequelize = require('../database/config');
 
 const postCampaign = async (req, res)=>{
     try {
-        const { title, description, status, duration, measure_id, votes} = req.body;
-        const campaign = new Campaign({ title, description, status, duration, measure_id, votes});
+        const { title, description, campaign_state_id, duration, measure_id, votes} = req.body;
+        const campaign = new Campaign({ title, description, campaign_state_id, duration, measure_id, votes});
         await campaign.save();
         res.json({
             ok: true,
@@ -22,7 +22,7 @@ const postCampaign = async (req, res)=>{
 const putCampaign = async (req, res)=>{
     try {
         const { id } = req.params;
-        const { title, description, status, duration, measure_id, votes} = req.body;
+        const { title, description, campaign_state_id, duration, measure_id, votes} = req.body;
         const campaign = await Campaign.findByPk( id );
         if(!campaign){
             return res.status(404).json({
@@ -32,7 +32,7 @@ const putCampaign = async (req, res)=>{
         } 
         campaign.title = title;
         campaign.description = description;
-        campaign.status = status;
+        campaign.campaign_state_id = campaign_state_id;
         campaign.duration = duration;
         campaign.measure_id = measure_id;
         campaign.votes = votes;
