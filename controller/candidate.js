@@ -43,7 +43,7 @@ const postCandidate = async (req, res) => {
 
     const result = await cloudinary.uploader.upload(photo);    
     const candidate = new Candidate({ membership_number, campaign_id, description, photo: result.secure_url, candidate_position_id });
-    await candidate.save();
+    const newCandidate = await candidate.save();
 
     if(diplomas.length > 0){
       for(let i = 0; i < diplomas.length; i++){
@@ -52,7 +52,7 @@ const postCandidate = async (req, res) => {
           description: diplomas[i].description,
           graduation_year: diplomas[i].graduation_year,
           institution: diplomas[i].institution,
-          candidate_id: diplomas[i].candidate_id
+          candidate_id: newCandidate.candidate_id
         });
 
         await academic_qualification.save()

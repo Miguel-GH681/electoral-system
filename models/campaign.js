@@ -27,6 +27,10 @@ const Campaign = sequelize.define('Campaign', {
     measure_id: {
         type: DataTypes.INTEGER,
         allowNull: false
+    },
+    votes: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
 }, {
     tableName: 'campaign',
