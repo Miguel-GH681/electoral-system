@@ -10,7 +10,7 @@ sequelize.authenticate().then(()=>{
     app.use(express.json({limit: '10mb'}));
     app.use(cors());
 
-    app.use( '/api/login', require('./routes/auth'));
+    app.use( '/api/users', require('./routes/auth'));
     app.use( '/api/campaign', require('./routes/campaign'));
     app.use( '/api/candidate', require('./routes/candidate'));
 
