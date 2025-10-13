@@ -1,25 +1,9 @@
-const User = require('../models/user');
-const Message = require('../models/message');
+const Vote = require('../models/vote');
 
-
-const userConnected = async (uid)=> {
-    const user = await User.findById(uid);
-    user.online = true;
-    await user.save();
-    return user;
-}
-
-const userDisconnected = async (uid)=> {
-    const user = await User.findById(uid);
-    user.online = false;
-    await user.save();
-    return user;
-}
-
-const saveMessage = async (payload)=>{
+const saveVote = async (payload)=>{
     try {
-        const mensage = new Message(payload);
-        await mensage.save();
+        const vote = new Vote(payload);
+        await vote.save();
         return true;
     } catch (error) {
         return false;
@@ -27,7 +11,5 @@ const saveMessage = async (payload)=>{
 }
 
 module.exports = {
-    userConnected,
-    userDisconnected,
-    saveMessage
+    saveVote
 }
