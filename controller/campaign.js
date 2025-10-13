@@ -72,7 +72,11 @@ const deleteCampaign = async (req, res)=>{
 
 const getCampaigns = async (req, res)=>{
     try {
-        const campaigns = await Campaign.findAll();
+        const campaigns = await sequelize.query('select * from get_campaigns()',
+            {
+                type: sequelize.QueryTypes.SELECT
+            }
+        );
         res.json({
             ok: true,
             msg: campaigns
