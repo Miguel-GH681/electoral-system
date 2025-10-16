@@ -4,7 +4,7 @@ const getJWT = ( membership_number, role_id )=>{
     return new Promise((resolve, reject)=>{
         const payload = { membership_number, role_id };        
         jwt.sign( payload, process.env.JWT_KEY, {
-            expiresIn: '6h'
+            expiresIn: '30s'
         }, (error, token)=>{
             if(error){
                 reject('No se pudo generar el JWT');
