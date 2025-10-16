@@ -3,6 +3,7 @@ const { postUser, login, getUsers, putUser, deleteUser } = require('../controlle
 const { check } = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
+const { validarRole } = require('../middlewares/validar-role');
 const router = Router();
 
 router.post('/', [
@@ -21,8 +22,8 @@ router.post('/login', [
     check('password', 'El \'password\' es obligatorio').not().isEmpty(),
     validarCampos
 ], login);
-router.get('/', validarJWT, getUsers);
-router.put('/:membership_number', validarJWT, putUser);
-router.delete('/:membership_number', validarJWT, deleteUser);
+router.get('/', [validarJWT, validarRole], getUsers);
+router.put('/:membership_number', [validarJWT, validarRole], putUser);
+router.delete('/:membership_number', [validarJWT, validarRole], deleteUser);
 
 module.exports = router;
