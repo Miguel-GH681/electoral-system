@@ -1,7 +1,6 @@
 
 # API REST
-
-Esta API REST permite la manipulación de usuarios a través de distintos endpoints. Esta es la base para la creación de un sistema electoral en el cual los usuarios serán ingenieros que pertenecen al Colegio de Ingenieros de Guatemala los cuales podrán votar en las distintas campañas existentes.
+Esta API REST permite la manipulación de usuarios (Creación, Lectura, Actualización y Eliminación) a través de endpoints que implementan JWT como método de autenticación. El token generado a traves del endpoint de login tendrá una duración de 30s y le dará permiso al consumidor de poder acceder a ciertos recursos validando en primer lugar que sí este autenticado y en segundo lugar que tenga un rol válido.
 
 ## Ejecución
 - Ubicarse en la carpeta raíz
@@ -9,58 +8,50 @@ Esta API REST permite la manipulación de usuarios a través de distintos endpoi
 - Levantar el proyecto con el comando: `npm start`
 
 #### URL base
-https://electoral-system.onrender.com/api
+https://electoral-system.onrender.com
+
 ## Endpoints
 
+**LOGIN** `/users/login`
+```json
+{
+    "membership_number": "",
+    "dpi": "",
+    "birthdate": "",
+    "password": ""
+}
+```
+
+**USUARIO ADMINISTRADOR**
+```json
+{
+    "membership_number": "2",
+    "dpi": "2998365850101",
+    "birthdate": "2004-02-20",
+    "password": "umg123"
+}
+```
+
+##### HEADERS
+Para que los endpoinds respondan adecuadamente se debe colocar el siguiente valor en el encabezado:
+`x-token: <TOKEN>`
+
 **GET** `/users`
-
 #### Response (200)
-
 ```json
 {
     "ok": true,
     "msg": [
         {
-            "membership_number": 2,
-            "full_name": "Carlos González",
-            "email": "carlosg@gmail.com",
-            "dpi": "2998365850101",
-            "birthdate": "2004-02-20",
-            "password": "$2b$10$ylAP7Y9OBALy6oglxnRp1ukVVQuKEnUXQB.ZDuq1k65oTw8fmmBwe",
-            "role_id": 1
+            "membership_number": 39,
+            "full_name": "Marcos Alonzo",
+            "email": "marcoss@gmail.com",
+            "dpi": "3998365840101",
+            "birthdate": "2002-02-28",
+            "password": "$2b$10$83C1FmdMERyYEsVYOmOnQeiRwUp1.c/guV5fkGme.2jeigVQeKoTi",
+            "role_id": 2
         }
     ]
-}
-```
-
-**POST** `/users`
-#### Request
-```json
-{
-    "membership_number": "2",
-    "full_name": "Carlos González",
-    "email": "carlosg@gmail.com",
-    "dpi": "2998365850101",
-    "birthdate": "04/02/2002",
-    "password":"umg123",
-    "role_id": "1"
-}
-```
-
-#### Response (200)
-```json
-{
-    "ok": true,
-    "msg": {
-        "membership_number": 6,
-        "full_name": "Andrea Perez",
-        "email": "andrea.perez@gmail.com",
-        "dpi": "299836580101",
-        "birthdate": "2004-02-20",
-        "password": "$2b$10$NTKEb46dj/Uo1LC2jV2UkO6VF7g/oArMCDgDp16l2iAhGpib3do3u",
-        "role_id": 2
-    },
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZW1iZXJzaGlwX251bWJlciI6Niwicm9sZV9pZCI6MiwiaWF0IjoxNzYwMjQ0OTE3LCJleHAiOjE3NjAyNjY1MTd9.OdqDyq_8QTnCwHSzqZJtCvWDsz8l-XUt4VGd5gUO-D0"
 }
 ```
 
@@ -93,6 +84,5 @@ https://electoral-system.onrender.com/api
     "msg": "Usuario eliminado correctamente"
 }
 ```
-### URL 
-
+### URL
 https://electoral-system.onrender.com
