@@ -8,7 +8,7 @@ Esta API REST permite la manipulación de usuarios (Creación, Lectura, Actualiz
 - Levantar el proyecto con el comando: `npm start`
 
 #### URL base
-https://electoral-system.onrender.com
+https://electoral-system.onrender.com/api
 
 ## Endpoints
 
@@ -85,4 +85,4 @@ Para que los endpoinds respondan adecuadamente se debe colocar el siguiente valo
 }
 ```
 ### URL
-https://electoral-system.onrender.com
+https://electoral-system.onrender.com/api
