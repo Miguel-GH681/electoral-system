@@ -1,8 +1,7 @@
-const { Op } = require('sequelize');
-
 const Campaign = require('../models/campaign');
+const Measure = require('../models/measure');
 const sequelize = require('../database/config');
-
+const { timeRemaining } = require('../helpers/date-manager');
 
 const postCampaign = async (req, res)=>{
     try {
@@ -106,10 +105,16 @@ const getCandidatesByCampaign = async (req, res) => {
         }
     );
 
+    const measure = await Measure.findByPk(campaign.measure_id);
+    if (!measure) {
+      return res.status(404).json({ ok: false, msg: 'Medida no encontrada' });
+    }
+
     res.json({
       ok: true,
       msg: {
         campaign,
+        endDate: timeRemaining(campaign.init_date, campaign.duration, measure),
         candidates
       }
     });
@@ -119,10 +124,36 @@ const getCandidatesByCampaign = async (req, res) => {
   }
 };
 
+const startCampaign = async (req, res) => {
+  try {
+    const { campaign_id } = req.params;
+    const campaign = await Campaign.findByPk(campaign_id);
+
+    if (!campaign) {
+      return res.status(404).json({ ok: false, msg: 'Campaña no encontrada' });
+    }
+
+    const measure = await Measure.findByPk(campaign.measure_id);
+    if (!measure) {
+      return res.status(404).json({ ok: false, msg: 'Medida no encontrada' });
+    }
+
+    return res.json({
+      ok: true,
+      endDate: timeRemaining(campaign.init_date, campaign.duration, measure)
+    });
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ ok: false, msg: 'Comuníquese con el administrador' });
+  }
+};
+
 module.exports = {
     postCampaign,
     putCampaign,
     deleteCampaign,
     getCampaigns,
+    startCampaign,
     getCandidatesByCampaign
 }

@@ -18,6 +18,10 @@ const Vote = sequelize.define('Vote', {
     vote_date: {
         type: DataTypes.DATE,
         allowNull: false
+    },
+    candidate_position_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
 }, {
     tableName: 'vote',

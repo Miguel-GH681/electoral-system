@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { postCampaign, putCampaign, deleteCampaign, getCampaigns, getCandidatesByCampaign } = require('../controller/campaign');
+const { postCampaign, putCampaign, deleteCampaign, getCampaigns, getCandidatesByCampaign, startCampaign } = require('../controller/campaign');
 const { check } = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
@@ -28,5 +28,6 @@ router.put('/:id', [
 router.delete('/:id', deleteCampaign);
 router.get('/', getCampaigns);
 router.get('/:id', getCandidatesByCampaign);
+router.get('/start/:campaign_id', validarJWT, startCampaign);
 
 module.exports = router;

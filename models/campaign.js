@@ -31,6 +31,14 @@ const Campaign = sequelize.define('Campaign', {
     votes: {
         type: DataTypes.INTEGER,
         allowNull: false
+    },
+    init_date: {
+        type: DataTypes.DATE,
+        allowNull: true
+    },
+    end_date:{
+        type: DataTypes.DATE,
+        allowNull: true
     }
 }, {
     tableName: 'campaign',
