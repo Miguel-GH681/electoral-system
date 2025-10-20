@@ -12,8 +12,12 @@ io.on('connection', client => {
     }    
     
     client.on('vote', async (payload)=>{
-        await saveVote( payload );
-        io.emit('vote', payload);
+        let resp = await saveVote( payload );
+        if(resp){
+            io.emit('vote', payload);        
+        } else{
+            io.emit('vote', null)
+        }
     });
 
     client.on('disconnect', ()=>{

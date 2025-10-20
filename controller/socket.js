@@ -1,19 +1,20 @@
 const Vote = require('../models/vote');
+const { Op } = require('sequelize');
 
 const saveVote = async (payload)=>{
-    try {
+    try {        
         const { candidate_id, voter_id, candidate_position_id, vote_date } = payload;
         const voteExists = await Vote.findOne({
             where: {
                 [Op.and]: [
-                    {candidate_id},
                     {voter_id},
                     {candidate_position_id}
                 ]
             }
         });
+       
         if(voteExists){
-            return res.status(400).json({ok: false, msg: 'El usuario ya realizó su voto.'});
+            return false
         }
 
         const vote = new Vote({candidate_id, voter_id, candidate_position_id, vote_date});

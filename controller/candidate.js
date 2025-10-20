@@ -41,7 +41,13 @@ const postCandidate = async (req, res) => {
       });
     }
 
-    const result = await cloudinary.uploader.upload(photo);    
+    const result = await cloudinary.uploader.upload(photo, {
+      transformation: [
+        {
+          width: 213, heigth: 240, crop: "fill"
+        }
+      ]
+    });    
     const candidate = new Candidate({ membership_number, campaign_id, description, photo: result.secure_url, candidate_position_id });
     const newCandidate = await candidate.save();
 

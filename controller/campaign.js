@@ -1,7 +1,8 @@
 const Campaign = require('../models/campaign');
 const Measure = require('../models/measure');
+const CampaignState = require('../models/campaign_state');
 const sequelize = require('../database/config');
-const { timeRemaining } = require('../helpers/date-manager');
+const { timeRemaining, currentDate } = require('../helpers/date-manager');
 
 const postCampaign = async (req, res)=>{
     try {
@@ -21,7 +22,7 @@ const postCampaign = async (req, res)=>{
 const putCampaign = async (req, res)=>{
     try {
         const { id } = req.params;
-        const { title, description, campaign_state_id, duration, measure_id, votes} = req.body;
+        const { campaign_state_id } = req.body;
         const campaign = await Campaign.findByPk( id );
         if(!campaign){
             return res.status(404).json({
@@ -29,17 +30,32 @@ const putCampaign = async (req, res)=>{
                 msg: 'Campaña no encontrada'
             });
         } 
-        campaign.title = title;
-        campaign.description = description;
+
+        const measure = await Measure.findByPk( campaign.campaign_state_id );
+        if(!measure){
+          return res.status(404).json({
+              ok: false,
+              msg: 'Medida no encontrada'
+          });
+        }
+
+        if(((campaign.campaign_state_id == 2 || campaign.campaign_state_id == 3 || campaign.campaign_state_id == 4) && campaign_state_id == 1) ||
+           (campaign.campaign_state_id == 4 && (campaign_state_id == 3 || campaign_state_id == 2 || campaign_state_id == 1))){
+          return res.status(400).json({
+            ok: false,
+            msg: 'No se puede realizar el cambio de estado debido a politicas de la aplicacion'
+          })
+        }
+
         campaign.campaign_state_id = campaign_state_id;
-        campaign.duration = duration;
-        campaign.measure_id = measure_id;
-        campaign.votes = votes;
+        if(!campaign.init_date){          
+          campaign.init_date = currentDate()
+        }
         await campaign.save();
 
         res.json({
             ok: true,
-            msg: campaign
+            msg: timeRemaining(campaign.init_date, campaign.duration, measure)
         });
     } catch (error) {
         console.log(error);
@@ -149,11 +165,48 @@ const startCampaign = async (req, res) => {
   }
 };
 
+const getCampaignState = async (req, res)=>{
+  try {
+    const campaignState = await CampaignState.findAll();
+
+    res.json({
+      ok: true,
+      msg: campaignState
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ ok: false, msg: 'Comuníquese con el administrador' });
+  }
+}
+
+const getVoteReport = async (req, res)=>{
+  try {
+    const {campaign_id} = req.params;
+
+    const report = await sequelize.query('select * from get_vote_report(:campaign_id)',
+      {
+          replacements: { campaign_id },
+          type: sequelize.QueryTypes.SELECT
+      }
+    );
+
+    res.json({
+      ok:true,
+      msg: report
+    })
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ ok: false, msg: 'Comuníquese con el administrador' });
+  }
+}
+
 module.exports = {
     postCampaign,
     putCampaign,
     deleteCampaign,
     getCampaigns,
     startCampaign,
-    getCandidatesByCampaign
+    getCandidatesByCampaign,
+    getCampaignState,
+    getVoteReport
 }

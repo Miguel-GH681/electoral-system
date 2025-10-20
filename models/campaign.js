@@ -33,7 +33,7 @@ const Campaign = sequelize.define('Campaign', {
         allowNull: false
     },
     init_date: {
-        type: DataTypes.DATE,
+        type: DataTypes.STRING,
         allowNull: true
     },
     end_date:{

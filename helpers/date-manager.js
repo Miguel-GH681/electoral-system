@@ -27,6 +27,11 @@ const timeRemaining = (init_date, duration, measure)=>{
     return endDate.format("YYYY-MM-DD HH:mm:ss");
 }
 
+const currentDate = () => {
+  return dayjs().tz('America/Guatemala').format('YYYY-MM-DD HH:mm:ss');
+};
+
 module.exports = {
-    timeRemaining
+    timeRemaining,
+    currentDate
 }
