@@ -49,14 +49,19 @@ const putCampaign = async (req, res)=>{
 
         campaign.campaign_state_id = campaign_state_id;
         if(!campaign.init_date){          
-          campaign.init_date = currentDate()
+          campaign.init_date = currentDate();
+          await campaign.save();
+          res.json({
+              ok: true,
+              msg: timeRemaining(campaign.init_date, campaign.duration, measure)
+          });
+        } else{
+          await campaign.save();
+          res.json({
+              ok: true,
+              msg: null
+          });
         }
-        await campaign.save();
-
-        res.json({
-            ok: true,
-            msg: timeRemaining(campaign.init_date, campaign.duration, measure)
-        });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ok: false, msg: 'Comuníquese con el administrador'});
