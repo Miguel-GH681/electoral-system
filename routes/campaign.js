@@ -7,7 +7,8 @@ const {
     getCandidatesByCampaign, 
     startCampaign, 
     getCampaignState, 
-    getVoteReport
+    getVoteReport,
+    getResult
 } = require('../controller/campaign');
 const { check } = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos');
@@ -34,5 +35,6 @@ router.delete('/:id', deleteCampaign);
 router.get('/', getCampaigns);
 router.get('/:id', getCandidatesByCampaign);
 router.get('/start/:campaign_id', validarJWT, startCampaign);
-router.get('/report/:campaign_id', getVoteReport);
+router.get('/report/:campaign_id', validarJWT, getVoteReport);
+router.get('/result/:campaign_id', validarJWT, getResult);
 module.exports = router;

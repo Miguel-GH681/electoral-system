@@ -205,6 +205,26 @@ const getVoteReport = async (req, res)=>{
   }
 }
 
+const getResult = async (req, res)=>{
+  try {
+    const { campaign_id } = req.params;
+        const campaign_result = await sequelize.query('select * from get_result(:campaign_id)',
+      {
+          replacements: { campaign_id },
+          type: sequelize.QueryTypes.SELECT
+      }
+    );
+
+    res.json({
+      ok:true,
+      msg: campaign_result
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ ok: false, msg: 'Comuníquese con el administrador' });
+  }
+}
+
 module.exports = {
     postCampaign,
     putCampaign,
@@ -213,5 +233,6 @@ module.exports = {
     startCampaign,
     getCandidatesByCampaign,
     getCampaignState,
-    getVoteReport
+    getVoteReport,
+    getResult
 }
