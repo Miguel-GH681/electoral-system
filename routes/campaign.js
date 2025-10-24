@@ -32,9 +32,9 @@ router.put('/:id', [
     validarRole,
     validarJWT
 ], putCampaign);
-router.delete('/:id', deleteCampaign);
-router.get('/', getCampaigns);
-router.get('/:id', getCandidatesByCampaign);
+router.delete('/:id', validarJWT, deleteCampaign);
+router.get('/', validarJWT, getCampaigns);
+router.get('/:id', validarJWT, getCandidatesByCampaign);
 router.get('/start/:campaign_id', validarJWT, startCampaign);
 router.get('/report/:campaign_id', validarJWT, getVoteReport);
 router.get('/result/:campaign_id', validarJWT, getResult);

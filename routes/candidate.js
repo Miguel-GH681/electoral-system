@@ -30,6 +30,6 @@ router.put('/:id', [
 router.get('/', validarJWT, getEngineers);
 router.get('/candidate-positions', validarJWT, getCandidatePositions);
 router.get('/measures', validarJWT, getMeasures);
-router.delete('/:id', deleteCandidate);
+router.delete('/:id', validarJWT, deleteCandidate);
 
 module.exports = router;
