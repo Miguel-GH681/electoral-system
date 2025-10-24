@@ -225,6 +225,26 @@ const getResult = async (req, res)=>{
   }
 }
 
+const terminateCampaign = async (req, res)=>{
+  try {
+    const { campaign_id } = req.params;
+    const campaign = await Campaign.findByPk(campaign_id);
+    if(!campaign){
+      return res.status(404).json({ ok: false, msg: 'Campaña no encontrada' });
+    }
+
+    campaign.campaign_state_id = 4;
+    await campaign.save();
+    res.json({
+      ok: true,
+      msg: 'Campaña finalizada'
+    })
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ ok: false, msg: 'Comuníquese con el administrador' });
+  }
+}
+
 module.exports = {
     postCampaign,
     putCampaign,
@@ -234,5 +254,6 @@ module.exports = {
     getCandidatesByCampaign,
     getCampaignState,
     getVoteReport,
-    getResult
+    getResult,
+    terminateCampaign
 }
